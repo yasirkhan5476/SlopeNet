@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Component/CustomTextformField.dart';
+import '../Screen/RoleVerificationscreen.dart';
 
 
 class ProfileController extends GetxController {
@@ -25,7 +26,7 @@ class ProfileController extends GetxController {
   }
 
   void openRoleVerification() {
-    // Get.to(() => RoleVerificationScreen());
+    Get.to(() => RoleVerificationScreen());
   }
 
   void openVerificationQueue() {
