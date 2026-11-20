@@ -6,6 +6,7 @@ import 'package:slope_net/Controller/AuthenticationController.dart';
 import 'package:slope_net/Screen/Auth/Forgotpassword.dart';
 import 'package:slope_net/Screen/Auth/SignupScreen.dart';
 import 'package:slope_net/Screen/MapScreen.dart';
+import 'package:slope_net/Screen/RootScreen.dart';
 import 'package:slope_net/Utils/AppColors.dart';
 import 'package:slope_net/Utils/AppIcons.dart';
 
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Future.delayed(Duration(seconds: 3),(){
         if(mounted){
           isLoading.value=false;
-          Get.offAll(Mapscreen());
+          Get.offAll(RootScreen());
         }
       });
     }else {
