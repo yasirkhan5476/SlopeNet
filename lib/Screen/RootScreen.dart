@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:slope_net/Screen/MapScreen.dart';
 import 'package:slope_net/Screen/ProfileScreen.dart';
+import 'package:slope_net/Screen/RouteScreen.dart';
 import 'package:slope_net/Utils/AppColors.dart';
 // Make sure to import Mapscreen and ProfileScreen here
 
@@ -25,7 +26,7 @@ class _RootScreenState extends State<RootScreen> {
 
   late final List<Widget> _screens = [
     Mapscreen(),
-    _TabPlaceholder(title: "Route", icon: Icons.alt_route),
+    Routescreen(),
     _TabPlaceholder(title: "Alerts", icon: Icons.notifications_none),
      _TabPlaceholder(title: "Offline", icon: Icons.download_outlined),
     ProfileScreen(),

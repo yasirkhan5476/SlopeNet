@@ -12,7 +12,6 @@ import 'package:slope_net/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -34,6 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'Slope Net',
       theme: ThemeData(
         fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
+
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home:  SplashScreen(),
