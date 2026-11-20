@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:slope_net/Screen/Auth/Login_Screen.dart';
 import 'package:slope_net/Screen/MapScreen.dart';
 
 class Onboardingcontroller extends GetxController{
@@ -13,7 +14,7 @@ class Onboardingcontroller extends GetxController{
       pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     }
     else{
-      Get.offAll(Mapscreen());
+      Get.offAll(LoginScreen());
     }
   }
 

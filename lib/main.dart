@@ -4,6 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:slope_net/Screen/Auth/Login_Screen.dart';
+import 'package:slope_net/Screen/MapScreen.dart';
+import 'package:slope_net/Screen/RootScreen.dart';
 import 'package:slope_net/Screen/Splash_Screen.dart';
 import 'package:slope_net/firebase_options.dart';
 
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SplashScreen(),
+      home:  SplashScreen(),
     );
   }
 }

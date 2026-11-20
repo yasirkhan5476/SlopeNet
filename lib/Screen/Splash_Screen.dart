@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:slope_net/Controller/SplashController.dart';
 import 'package:slope_net/Utils/AppAnimations.dart';
 import 'package:slope_net/Utils/AppColors.dart';
+import 'package:slope_net/Utils/AppIcons.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -46,7 +47,7 @@ class SplashScreen extends StatelessWidget {
                       border: Border.all(color: Colors.white12, width: 1),
                     ),
                     child: Image.asset(
-                      'assets/Icon/Slopenet2.png',
+                      Appicons.Logoicon,
                       width: 70,
                       height: 70,
                     ),
