@@ -12,7 +12,20 @@
           "package_name": "com.example.slope_net"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1050863766971-ul61ihsjaht300poqm5logk9oidud53l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.slope_net",
+            "certificate_hash": "6a1e6d0fc530f1571c067035e9e5a1c1d1ee22ab"
+          }
+        },
+        {
+          "client_id": "1050863766971-e1o2tk5fmpkse0hohj22103r84mrprlp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAT1fy5zqgOOUcNyE9giCiktkMjznXKjEE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050863766971-e1o2tk5fmpkse0hohj22103r84mrprlp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1050863766971-fuftcvi7a52usgv83m3fd86mh6o80aps.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slopeNet"
+              }
+            }
+          ]
         }
       }
     }
