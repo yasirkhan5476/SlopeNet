@@ -15,7 +15,7 @@ class Authenticationcontroller extends GetxController {
           : "Enter a valid email";
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   final Rxn<User> firebaseUser = Rxn<User>();
@@ -80,7 +80,7 @@ class Authenticationcontroller extends GetxController {
   Future<void> _ensureUserDocument(User user, {String? fallbackName}) async {
     if (_auth.currentUser == null) return;
 
-    final docRef = _firestore.collection('users').doc(user.uid);
+    final docRef = _db.collection('users').doc(user.uid);
     final snap = await docRef.get();
 
     if (!snap.exists) {
@@ -266,7 +266,7 @@ class Authenticationcontroller extends GetxController {
 
       if (user != null && user.emailVerified) {
         emailVerified.value = true;
-        await _firestore.collection('users').doc(user.uid).update({
+        await _db.collection('users').doc(user.uid).update({
           'emailVerified': true,
           'verifiedAt': FieldValue.serverTimestamp(),
         });
@@ -385,7 +385,7 @@ class Authenticationcontroller extends GetxController {
       final uid = _auth.currentUser?.uid;
 
       if (uid != null) {
-        await _firestore.collection('users').doc(uid).update({
+        await _db.collection('users').doc(uid).update({
           'activeSession': false,
           'lastLogoutAt': FieldValue.serverTimestamp(),
         }).catchError((_) {});
