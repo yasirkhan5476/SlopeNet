@@ -7,7 +7,7 @@ import 'package:slope_net/Utils/AppColors.dart';
 import 'package:slope_net/Utils/AppIcons.dart';
 
 class Forgotpassword extends StatefulWidget {
-  const Forgotpassword({super.key});
+    const Forgotpassword({super.key});
 
   @override
   State<Forgotpassword> createState() => _ForgotpasswordState();
@@ -15,20 +15,27 @@ class Forgotpassword extends StatefulWidget {
 
 class _ForgotpasswordState extends State<Forgotpassword> {
   final TextEditingController ForgotpasswordController = TextEditingController();
+  final Authenticationcontroller AuthController = Get.find<Authenticationcontroller>();
   final _formkey = GlobalKey<FormState>();
   void _submit(){
     if(!_formkey.currentState!.validate()) return;
+    AuthController.sendPasswordResetEmail(ForgotpasswordController.text);
 
+  }
+  @override
+  void dispose() {
+   ForgotpasswordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B131E),
+      backgroundColor:    Color(0xFF0B131E),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding:    EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,7 +63,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                         Container(
                           padding:  EdgeInsets.all(12),
                           decoration: BoxDecoration(color: Appcolors.Fieldbackcolor, shape: BoxShape.circle),
-                          child: const Icon(Icons.lock_outline, color: Colors.tealAccent, size: 28),
+                          child:    Icon(Icons.lock_outline, color: Colors.tealAccent, size: 28),
                         ),
                          SizedBox(height: 16),
                          Text("Forgot your password?", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
@@ -68,7 +75,11 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                           key: _formkey,
                           child: Column(
                             children: [
-                              Customtextformfield(label: "Email address", hinText: "name@example.com",validator: (v)=>Authenticationcontroller.validateEmail(v??''),),
+                              Customtextformfield(controller: ForgotpasswordController,
+                                label: "Email address",
+                                hinText: "name@example.com",
+                                Keyboardtype: TextInputType.emailAddress,
+                                validator: (v) => Authenticationcontroller.validateEmail(v ?? ''),),
                             ],
                           ),
                         ),
@@ -79,7 +90,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                     Column(
                       children: [
                         CustomTextButton(
-                          Textfield: "Send reset link",
+                          Textfield: AuthController.isLoading.value?"Sending":"Send reset link",
                           onPressed: () {
                           _submit();
                           },

@@ -8,7 +8,7 @@ import '../../Component/CustomTextformField.dart';
 import '../../Utils/AppColors.dart';
 
 class Signupscreen extends StatefulWidget {
-  const Signupscreen({super.key});
+    Signupscreen({super.key});
 
   @override
   State<Signupscreen> createState() => _SignupscreenState();
@@ -23,13 +23,15 @@ class _SignupscreenState extends State<Signupscreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final Authenticationcontroller AuthController = Authenticationcontroller();
   void _submit() {
     if (!_formkey.currentState!.validate()) return;
+    AuthController.signUpWithEmail(
+        fullName: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
 
-    // Agar validation pass ho jaye toh yahan apna signup logic likhein
-    print("Name: ${nameController.text}");
-    print("Email: ${emailController.text}");
-    print("Password: ${passwordController.text}");
+    );
   }
 
   @override
@@ -37,6 +39,7 @@ class _SignupscreenState extends State<Signupscreen> {
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+
     super.dispose();
   }
 
@@ -47,7 +50,7 @@ class _SignupscreenState extends State<Signupscreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding:   EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -64,20 +67,20 @@ class _SignupscreenState extends State<Signupscreen> {
                     child: Image.asset(Appicons.backicon),
                   ),
                 ),
-                const SizedBox(height: 20),
+                  SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                      Text(
                       "Create your account",
                       style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                     SizedBox(height: 8),
+                      Text(
                       "Free for every traveler on the KKH and Skardu Road.",
                       style: TextStyle(color: Colors.white60, fontSize: 14),
                     ),
-                    const SizedBox(height: 24),
+                     SizedBox(height: 24),
 
 
                     Form(
@@ -90,7 +93,7 @@ class _SignupscreenState extends State<Signupscreen> {
                             hinText: "Your name",
                             validator: (v) => (v == null || v.trim().isEmpty) ? "Please enter your full name" : null,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           Customtextformfield(
                             controller: emailController,
                             label: "Email address",
@@ -98,8 +101,7 @@ class _SignupscreenState extends State<Signupscreen> {
                             Keyboardtype: TextInputType.emailAddress,
                             validator: (v) => Authenticationcontroller.validateEmail(v ?? ''),
                           ),
-                          const SizedBox(height: 16),
-
+                          SizedBox(height: 16),
 
                           Obx(
                                 () => Customtextformfield(
@@ -130,21 +132,39 @@ class _SignupscreenState extends State<Signupscreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 140),
 
 
+                    SizedBox(height: 12),
                     CustomTextButton(
-                      Textfield: "Create account",
-                      onPressed: _submit,
+                      Textfield: AuthController.isLoading.value?"Creating account":"Create account",
+                      onPressed:AuthController.isLoading.value?(){}:_submit,
                       textColor: Appcolors.buttonTextcolor,
                       backgroundColor: Appcolors.buttonbackcolor,
                     ),
                      SizedBox(height: 16),
 
+                    Obx(
+                          () => OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          side: BorderSide(color: Appcolors.FieldBorder),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: AuthController.isLoading.value
+                            ? null
+                            : () => AuthController.signInWithGoogle(),
+                        icon: const Icon(Icons.g_mobiledata, color: Colors.white, size: 28),
+                        label: const Text(
+                          "Sign up with Google",
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 140),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                         Text("Already have an account? ", style: TextStyle(color: Colors.white60, fontSize: 13)),
+                        Text("Already have an account? ", style: TextStyle(color: Colors.white60, fontSize: 13)),
                         GestureDetector(
                           onTap: () {
                             Get.back();

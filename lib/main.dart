@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:slope_net/Controller/AuthenticationController.dart';
 import 'package:slope_net/Screen/Auth/Login_Screen.dart';
 import 'package:slope_net/Screen/MapScreen.dart';
 import 'package:slope_net/Screen/RootScreen.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(Authenticationcontroller(),permanent: true);
 
   await dotenv.load(fileName: "assets/config.env");
   final mapboxToken = dotenv.env['MAPBOX_ACCESS_TOKEN'] ?? '';
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:  RootScreen(),
+      home:  SplashScreen(),
     );
   }
 }

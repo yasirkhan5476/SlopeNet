@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slope_net/Utils/AppColors.dart';
 
 class Routescreen extends StatefulWidget {
   const Routescreen({super.key});
@@ -10,6 +11,20 @@ class Routescreen extends StatefulWidget {
 class _RoutescreenState extends State<Routescreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      backgroundColor: Appcolors.backgroundcolor,
+      body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text("Route",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w900),) ,
+                )
+              ],
+            ),
+          )
+      ),
+    );
   }
 }

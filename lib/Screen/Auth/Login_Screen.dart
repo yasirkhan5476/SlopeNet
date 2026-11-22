@@ -23,26 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   RxBool isLoading = false.obs;
+  final Authenticationcontroller AuthController = Get.put(Authenticationcontroller());
   void _submit(){
     if(!_formkey.currentState!.validate()) return;
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
-    if(email=="yasir@gmail.com" && password == "12345"){
-      isLoading.value=true;
-      Future.delayed(Duration(seconds: 3),(){
-        if(mounted){
-          isLoading.value=false;
-          Get.offAll(RootScreen());
-        }
-      });
-    }else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Invalid email or password"),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+    String email = emailController.text;
+    String password = passwordController.text;
+    AuthController.loginWithEmail(email: email, password: password);
   }
   @override
   void dispose() {
@@ -63,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
-                      spacing: 150,
+                      spacing: 110,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF0D233A),
+                                    color:   Color(0xFF0D233A),
                                     borderRadius: BorderRadius.circular(10)
                                   ),
                                   child: Image.asset(
@@ -81,8 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 32,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                const Text("SlopeNet", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w800)),
+                                  SizedBox(width: 8),
+                                  Text("SlopeNet", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w800)),
 
                               ],
                             ),
@@ -91,25 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 8),
                             Text("Log in to see live landslide risk on your route.", style: TextStyle(color: Colors.white60, fontSize: 14)),
                             SizedBox(height: 24),
-                            // Container(
-                            //   padding:  EdgeInsets.all(4),
-                            //   decoration: BoxDecoration(color: Appcolors.Fieldbackcolor, borderRadius: BorderRadius.circular(12)),
-                            //   child: Row(
-                            //     children: [
-                            //       Expanded(
-                            //         child: Container(
-                            //           padding:  EdgeInsets.symmetric(vertical: 12),
-                            //           decoration: BoxDecoration(color: Colors.teal, borderRadius: BorderRadius.circular(10)),
-                            //           child:  Center(child: Text("Email", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
-                            //         ),
-                            //       ),
-                            //        Expanded(
-                            //         child: Center(child: Text("Phone OTP", style: TextStyle(color: Colors.white60, fontWeight: FontWeight.bold))),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            //  SizedBox(height: 24),
+
                           Form(
                             key: _formkey,
                             child: Column(
@@ -143,36 +111,55 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   Get.to(Forgotpassword());
                                 },
-                                child: const Text("Forgot password?", style: TextStyle(color: Colors.tealAccent, fontSize: 13)),
+                                child: Text("Forgot password?", style: TextStyle(color: Colors.tealAccent, fontSize: 13)),
                               ),
                             ),
-                            const SizedBox(height: 24),
+                             SizedBox(height: 24),
+                            Obx(
+                                  ()=>
+                                  CustomTextButton(
+                                    Textfield: AuthController.isLoading.value?"Logging in":"Login",
+                                    onPressed: AuthController.isLoading.value?(){}:(){
+                                      _submit();
+                                    },
+                                    backgroundColor: Appcolors.buttonbackcolor,
+                                    textColor: Appcolors.buttonTextcolor,
+                                  ),
+                            ),
+                             SizedBox(height: 12),
+                            Obx(
+                                  () => OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: Size(double.infinity, 50),
+                                  side: BorderSide(color: Appcolors.FieldBorder),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                                onPressed: AuthController.isLoading.value
+                                    ? null
+                                    : () => AuthController.signInWithGoogle(),
+                                icon:  Icon(Icons.g_mobiledata, color: Colors.white, size: 28),
+                                label: Text(
+                                  "Continue with Google",
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
 
                         Column(
                           children: [
-                            Obx(
-                                    ()=>
-                                    CustomTextButton(
-                                      Textfield: isLoading.value?"Logging in":"Login",
-                                      onPressed: isLoading.value?(){}:(){
-                                        _submit();
-                                        },
-                                      backgroundColor: Appcolors.buttonbackcolor,
-                                      textColor: Appcolors.buttonTextcolor,
-                                    ),
-                            ),
+
                             SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("New to SlopeNet? ", style: TextStyle(color: Colors.white60, fontSize: 13)),
+                                 Text("New to SlopeNet? ", style: TextStyle(color: Colors.white60, fontSize: 13)),
                                 GestureDetector(
                                   onTap: () {
                                     Get.to(Signupscreen());
                                   },
-                                  child: const Text("Create account", style: TextStyle(color: Colors.tealAccent, fontSize: 13, fontWeight: FontWeight.bold)),
+                                  child:  Text("Create account", style: TextStyle(color: Colors.tealAccent, fontSize: 13, fontWeight: FontWeight.bold)),
                                 ),
                               ],
                             ),
@@ -180,7 +167,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-            
                   ],
                 ),
             ),

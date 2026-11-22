@@ -10,11 +10,14 @@ class Customtextformfield extends StatelessWidget {
   final Widget? SuffixIcon;
   final Widget? prefixIcon;
   final FormFieldValidator? validator;
+  final FocusNode? FocusNodes;
+
   const Customtextformfield({
     required this.label,
     required this.hinText,
     this.isPassword = false,
     this.controller,
+    this.FocusNodes,
     this.Keyboardtype,
     this.prefixIcon,
     this.SuffixIcon,
@@ -34,6 +37,7 @@ class Customtextformfield extends StatelessWidget {
           obscureText: isPassword,
           keyboardType: Keyboardtype,
           validator: validator,
+          focusNode: FocusNodes,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: hinText,
