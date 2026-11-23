@@ -15,7 +15,7 @@ class Maplocationcontroller extends GetxController {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // 1. Check karein ke GPS on hai ya nahi
+
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Get.snackbar(
@@ -30,7 +30,7 @@ class Maplocationcontroller extends GetxController {
       return;
     }
 
-    // 2. Permissions check karein
+
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();

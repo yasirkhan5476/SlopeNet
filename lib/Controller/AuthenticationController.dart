@@ -8,6 +8,48 @@ import 'package:slope_net/Screen/Auth/Login_Screen.dart';
 import 'package:slope_net/Screen/Auth/VerifyEmailScreen.dart';
 import 'package:slope_net/Screen/RootScreen.dart';
 
+enum UserRole {
+  traveler,
+  fieldResponder,
+  verifiedAuthority;
+
+  String get firestoreValue {
+    switch (this) {
+      case UserRole.traveler:
+        return 'traveler';
+      case UserRole.fieldResponder:
+        return 'field_responder';
+      case UserRole.verifiedAuthority:
+        return 'verified_authority';
+    }
+  }
+
+  String get displayLabel {
+    switch (this) {
+      case UserRole.traveler:
+        return 'Traveler';
+      case UserRole.fieldResponder:
+        return 'Field Responder';
+      case UserRole.verifiedAuthority:
+        return 'Verified Authority';
+    }
+  }
+
+  static UserRole fromString(String? value) {
+    switch (value?.trim().toLowerCase()) {
+      case 'field_responder':
+      case 'fieldresponder':
+        return UserRole.fieldResponder;
+      case 'verified_authority':
+      case 'verifiedauthority':
+        return UserRole.verifiedAuthority;
+      case 'traveler':
+      default:
+        return UserRole.traveler;
+    }
+  }
+}
+
 class Authenticationcontroller extends GetxController {
   static String? validateEmail(String value) =>
       RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value.trim())
@@ -15,7 +57,7 @@ class Authenticationcontroller extends GetxController {
           : "Enter a valid email";
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   final Rxn<User> firebaseUser = Rxn<User>();
@@ -25,7 +67,13 @@ class Authenticationcontroller extends GetxController {
 
   final RxString userName = ''.obs;
   final RxString userEmail = ''.obs;
-  final RxString userRole = 'traveler'.obs;
+  final Rx<UserRole> userRole = UserRole.traveler.obs;
+
+  bool get isVerifiedAuthority =>
+      userRole.value == UserRole.verifiedAuthority;
+  bool get isFieldResponder =>
+      userRole.value == UserRole.fieldResponder ||
+          userRole.value == UserRole.verifiedAuthority;
 
   // Resend verification email cooldown (seconds)
   final RxInt resendSecondsLeft = 0.obs;
@@ -68,7 +116,7 @@ class Authenticationcontroller extends GetxController {
         emailVerified.value = false;
         userName.value = '';
         userEmail.value = '';
-        userRole.value = 'traveler';
+        userRole.value = UserRole.traveler;
       }
 
       if (!isAuthReady.value) {
@@ -80,7 +128,7 @@ class Authenticationcontroller extends GetxController {
   Future<void> _ensureUserDocument(User user, {String? fallbackName}) async {
     if (_auth.currentUser == null) return;
 
-    final docRef = _db.collection('users').doc(user.uid);
+    final docRef = _firestore.collection('users').doc(user.uid);
     final snap = await docRef.get();
 
     if (!snap.exists) {
@@ -93,7 +141,7 @@ class Authenticationcontroller extends GetxController {
         'uid': user.uid,
         'fullName': resolvedName,
         'email': user.email ?? '',
-        'role': 'traveler',
+        'role': UserRole.traveler.firestoreValue,
         'emailVerified': user.emailVerified,
         'activeSession': true,
         'createdAt': FieldValue.serverTimestamp(),
@@ -101,12 +149,12 @@ class Authenticationcontroller extends GetxController {
       });
 
       userName.value = resolvedName;
-      userRole.value = 'traveler';
+      userRole.value = UserRole.traveler;
     } else {
       final data = snap.data() ?? {};
       userName.value =
           (data['fullName'] ?? user.displayName ?? 'Traveler').toString();
-      userRole.value = (data['role'] ?? 'traveler').toString();
+      userRole.value = UserRole.fromString(data['role']?.toString());
 
       await docRef.set({
         'emailVerified': user.emailVerified,
@@ -146,7 +194,6 @@ class Authenticationcontroller extends GetxController {
       await user.updateDisplayName(fullName.trim());
       await _ensureUserDocument(user, fallbackName: fullName.trim());
 
-      // Send free Firebase verification email
       await user.sendEmailVerification();
       _startResendCooldown();
 
@@ -260,16 +307,15 @@ class Authenticationcontroller extends GetxController {
         return;
       }
 
-      // Must call reload() and re-read _auth.currentUser to refresh emailVerified
       await user.reload();
       user = _auth.currentUser;
 
       if (user != null && user.emailVerified) {
         emailVerified.value = true;
-        await _db.collection('users').doc(user.uid).update({
+        await _firestore.collection('users').doc(user.uid).set({
           'emailVerified': true,
           'verifiedAt': FieldValue.serverTimestamp(),
-        });
+        }, SetOptions(merge: true));
 
         Get.offAll(() => RootScreen());
       } else if (!silent) {
@@ -385,14 +431,14 @@ class Authenticationcontroller extends GetxController {
       final uid = _auth.currentUser?.uid;
 
       if (uid != null) {
-        await _db.collection('users').doc(uid).update({
+        await _firestore.collection('users').doc(uid).set({
           'activeSession': false,
           'lastLogoutAt': FieldValue.serverTimestamp(),
-        }).catchError((_) {});
+        }, SetOptions(merge: true)).catchError((_) {});
       }
 
       if (_googleInitialized) {
-        await _googleSignIn.signOut();
+        await _googleSignIn.signOut().catchError((_) {});
       }
       await _auth.signOut();
 

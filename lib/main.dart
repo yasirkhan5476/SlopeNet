@@ -1,44 +1,45 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:slope_net/Controller/AuthenticationController.dart';
-import 'package:slope_net/Screen/Auth/Login_Screen.dart';
-import 'package:slope_net/Screen/MapScreen.dart';
-import 'package:slope_net/Screen/RootScreen.dart';
+import 'package:slope_net/Controller/NotificationServicesController.dart';
 import 'package:slope_net/Screen/Splash_Screen.dart';
-import 'package:slope_net/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  Get.put(Authenticationcontroller(),permanent: true);
+  await Firebase.initializeApp();
 
-  await dotenv.load(fileName: "assets/config.env");
-  final mapboxToken = dotenv.env['MAPBOX_ACCESS_TOKEN'] ?? '';
-  MapboxOptions.setAccessToken(mapboxToken);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  runApp(const MyApp());
+  Get.put(Authenticationcontroller(), permanent: true);
+
+  final notifController = await Get.put(
+    NotificationServicesController(),
+    permanent: true,
+  ).init();
+
+  runApp(SlopeNetApp(notifController: notifController));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SlopeNetApp extends StatelessWidget {
+  final NotificationServicesController notifController;
+
+  const SlopeNetApp({
+    super.key,
+    required this.notifController,
+  });
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifController.handleInitialTerminatedMessage();
+    });
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Slope Net',
-      theme: ThemeData(
-        fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home:  SplashScreen(),
+      title: 'SlopeNet',
+      home: SplashScreen(),
     );
   }
 }
