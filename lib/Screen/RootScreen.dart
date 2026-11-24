@@ -4,6 +4,9 @@ import 'package:slope_net/Screen/MapScreen.dart';
 import 'package:slope_net/Screen/ProfileScreen.dart';
 import 'package:slope_net/Screen/RouteScreen.dart';
 import 'package:slope_net/Utils/AppColors.dart';
+
+import 'AlertScreen.dart';
+import 'RoutePlannerScreen.dart';
 // Make sure to import Mapscreen and ProfileScreen here
 
 class RootScreen extends StatefulWidget {
@@ -26,8 +29,8 @@ class _RootScreenState extends State<RootScreen> {
 
   late final List<Widget> _screens = [
     Mapscreen(),
-    Routescreen(),
-    _TabPlaceholder(title: "Alerts", icon: Icons.notifications_none),
+    RoutePlannerScreen(),
+    AlertsFeedScreen(),
      _TabPlaceholder(title: "Offline", icon: Icons.download_outlined),
     ProfileScreen(),
   ];

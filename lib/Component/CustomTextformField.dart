@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:slope_net/Utils/AppColors.dart';
 
 class Customtextformfield extends StatelessWidget {
-  final String label;
+  final String? label;
   final String hinText;
   final bool isPassword;
   final TextEditingController? controller;
@@ -13,7 +13,7 @@ class Customtextformfield extends StatelessWidget {
   final FocusNode? FocusNodes;
 
   const Customtextformfield({
-    required this.label,
+    this.label,
     required this.hinText,
     this.isPassword = false,
     this.controller,
@@ -30,7 +30,7 @@ class Customtextformfield extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,style: TextStyle(color: Colors.white24,fontSize: 13,fontWeight: FontWeight.w500),),
+        Text(label!,style: TextStyle(color: Colors.white24,fontSize: 13,fontWeight: FontWeight.w500),),
         SizedBox(height: 6,),
         TextFormField(
           controller: controller,

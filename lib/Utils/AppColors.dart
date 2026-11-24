@@ -6,10 +6,11 @@ class Appcolors {
   static final Color onboard = Color(0xFF0D233A);
   static final Color Fieldbackcolor = Color(0xFF131D2B);
   static final Color FieldBorder = Color(0xFF1E293B);
-  static final backgroundcolor = Color(0xFF0B131E);
-  static final buttonbackcolor = Color(0xFF00E676);
-  static final buttonTextcolor = Color(0xFF0B131E);
-  static final bottomColor = Color(0xFF00E676);
+  static final Color backgroundcolor = Color(0xFF0B131E);
+  static final Color buttonbackcolor = Color(0xFF00E676);
+  static final Color buttonTextcolor = Color(0xFF0B131E);
+  static final Color bottomColor = Color(0xFF00E676);
+  static final Color MapScreendowncolor = Color(0xFF101620);
 
   static  Color background = Color(0xFFF8FAFC);
   static  Color colorF3F7FF = Color(0xFFF8FAFC);
