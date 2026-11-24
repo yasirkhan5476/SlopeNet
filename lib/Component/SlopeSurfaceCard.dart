@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slope_net/Utils/AppColors.dart';
 
 class SlopeSurfaceCard extends StatelessWidget {
   final Widget child;
@@ -20,10 +21,10 @@ class SlopeSurfaceCard extends StatelessWidget {
     final card = Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: backgroundColor ?? Appcolors.SlopeCardcolor,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: borderColor ?? Colors.white.withValues(alpha: 0.08)
+          color: borderColor ?? Colors.white.withValues(alpha: 0.10)
         )
       ),
       child: child,

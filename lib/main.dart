@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:slope_net/Controller/AuthenticationController.dart';
 import 'package:slope_net/Controller/NotificationServicesController.dart';
+import 'package:slope_net/Controller/RoleController.dart';
 import 'package:slope_net/Screen/MapScreen.dart';
 import 'package:slope_net/Screen/Splash_Screen.dart';
 
@@ -28,6 +29,7 @@ Future<void> main() async {
   } else {
     debugPrint('Warning: MAPBOX_ACCESS_TOKEN is missing or empty in .env');
   }
+  Get.put(RoleController(),permanent: true);
 
   runApp(SlopeNetApp(notifController: notifController));
 }

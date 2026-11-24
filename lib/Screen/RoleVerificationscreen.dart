@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:slope_net/Component/CustomTextButton.dart';
 import 'package:slope_net/Component/CustomTextformField.dart';
 import 'package:slope_net/Utils/AppColors.dart';
+import '../Controller/AuthenticationController.dart';
 import '../Controller/RoleController.dart';
 
 class RoleVerificationScreen extends StatelessWidget {
@@ -64,7 +65,7 @@ class RoleVerificationScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
-                              controller.currentRole.value == UserRole.traveler ? "Default" : "Active",
+                              controller.currentRole == UserRole.traveler ? "Default" : "Active",
                               style: const TextStyle(
                                 color: Color(0xFF00E676),
                                 fontSize: 11,

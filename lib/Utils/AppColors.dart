@@ -11,6 +11,7 @@ class Appcolors {
   static final Color buttonTextcolor = Color(0xFF0B131E);
   static final Color bottomColor = Color(0xFF00E676);
   static final Color MapScreendowncolor = Color(0xFF101620);
+  static final Color SlopeCardcolor = Color(0xFF182230);
 
   static  Color background = Color(0xFFF8FAFC);
   static  Color colorF3F7FF = Color(0xFFF8FAFC);
